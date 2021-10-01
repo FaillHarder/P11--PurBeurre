@@ -25,6 +25,22 @@ class TestView(TestCase):
             url="https://fr.openfoodfacts.org/produit/3017620425035/nutella-ferrero"
         )
         self.product.categories.add(self.category)
+        self.product_2 = Product.objects.create(
+            product_name="Pate à tartiner",
+            bar_code="3700477609504",
+            nutriscore="d",
+            proteins_100g="6",
+            energy_100g="2311.00",
+            fat_100g="24.00",
+            fiber_100g="0.00",
+            carbohydrates_100g="53.00",
+            salt_100g="0",
+            saturated_fat_100g="6.00",
+            sugars_100g="52.00",
+            image="https://images.openfoodfacts.org/images/products/370/047/760/9504/front_fr.53.400.jpg",
+            url="https://fr.openfoodfacts.org/produit/3700477609504/pate-a-tartiner-chocolat"
+        )
+        self.product_2.categories.add(self.category)
         return super().setUp()
 
     def test_index(self):
@@ -55,6 +71,9 @@ class TestView(TestCase):
         request = self.factory.get("/substitute", {"query": "3017620425035"})
         view = substitute(request)
         self.assertEqual(view.status_code, 200)
+
+        substitute_result = Product().substitute("3017620425035")
+        self.assertEqual(len(substitute_result), 2)
 
     def test_mentions(self):
         request = self.factory.get("/mentions")
