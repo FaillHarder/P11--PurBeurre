@@ -71,7 +71,7 @@ class TestView(TestCase):
         request = self.factory.get("/substitute", {"query": "3017620425035"})
         view = substitute(request)
         self.assertEqual(view.status_code, 200)
-
+        # return a substitute with the nutriscore less than or equal to that of nutella
         substitute_result = Product().substitute("3017620425035")
         self.assertEqual(len(substitute_result), 2)
 
