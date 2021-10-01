@@ -1,0 +1,13 @@
+# env
+env/
+
+# git
+.git/
+
+# vscode
+.vscode/
+
+# env settings
+.env.dev
+.env.prod
+.env.prod.db

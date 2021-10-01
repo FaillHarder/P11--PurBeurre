@@ -1,0 +1,41 @@
+{
+    "fields": [
+        "product_name_fr",
+        "id",
+        "nutriscore_grade",
+        "proteins_100g",
+        "energy_100g",
+        "fat_100g",
+        "fiber_100g",
+        "carbohydrates_100g",
+        "salt_100g",
+        "saturated-fat_100g",
+        "sugars_100g",
+        "image_front_url",
+        "url"
+    ],
+    "categories": [
+        "Snacks",
+        "Snacks sucrés",
+        "Produits laitiers",
+        "Aliments à base de fruits et de légumes",
+        "Plats préparés",
+        "Céréales et pommes de terre",
+        "Produits fermentés",
+        "Produits laitiers fermentés",
+        "Produits à tartiner",
+        "Biscuits et gâteaux",
+        "Petit-déjeuners",
+        "Epicerie",
+        "Céréales et dérivés",
+        "Pâtisseries",
+        "Chocolats noirs",
+        "Jambons blancs",
+        "Chips et frites",
+        "Desserts lactés",
+        "Confitures et marmelades",
+        "Soupes",
+        "Viennoiseries"
+    ],
+    "page": 1
+}

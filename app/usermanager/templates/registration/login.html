@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block navbar %}
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container-fluid px-4 px-lg-5">
+        <img class="img_w50" src="{% static 'assets/img/logo_pur_beurre.png'%}" alt="logo_purbeurre">
+        <a class="navbar-brand" href="/#index">Pur Beurre</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'myprofile' %}">
+                        <img class="img_w50" src="{% static 'assets/img/avatar.png' %}" alt="img profile" name="myprofile">
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'myfood' %}">
+                        <img class="img_w50" src="{% static 'assets/img/carrot.png' %}" alt="img my food" name="myfood">
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <img class="img_w50" src="{% static 'assets/img/logout.png' %}" alt="img logout" name="logout">
+                    </a>
+                </li>
+
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <img class="img_w50" name="login" src="{% static 'assets/img/login.png' %}" alt="img login">
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock navbar %}
+
+{% block header %}
+    <!-- Masthead-->
+<header class="masthead">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 align-items-center justify-content-center text-center">
+            <div class="col-lg-8 align-self-center">
+                {% if form.errors %}
+                <h4 class="text-white">Votre nom d'utilisateur ou votre mot de passe est incorrect. Veuillez réessayer</h4>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 align-items-center justify-content-center">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <label for="fromlogin" class="form-label"><h4>Identifiant</h4></label>
+                <input type="text" autocomplete="off" name="username" class="form-control" placeholder="Identifiant">
+                
+                <label for="fromlogin" class="form-label"><h4>Password</h4></label>
+                <input type="password" name="password" class="form-control" placeholder="Mot de passe">
+                
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+
+                <button type="submit" value="{{ request.GET.index }}" class="btn btn-primary" name="validate">Valider</button>         
+            </form>
+            <h4><a href="{% url 'registrer' %}">Pas encore inscrit?</a></h4>
+        </div>
+    </div>    
+</header>
+{% endblock header %}

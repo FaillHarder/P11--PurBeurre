@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <!-- Masthead-->
+    <header class="product">
+        <div class="container-fluid bg-dark">
+            <div class="container-fluid bg_img_product" style="background-image: url({{product.image}});">
+                <div class="row justify-content-center">
+                    <div class="col-lg-auto text-center">
+                        <h3 class="mt-5 text-white bg-dark">[ {{ product.product_name }} ]</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid justify-content-center">
+            <div class="row justify-content-around">
+                <div class="col-lg-4">
+                    <div class="text-center">
+                        <h3 class="text-primary">Nutriscore</h3>
+                        <img src="static/assets/img/nutriscore/nutri-score-{{product.nutriscore}}.png" alt="nutriscore">
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row justify-content-center">
+                        <h3 class="text-center text-primary">Repères nutritionnels pour 100 grammes</h3>
+                    </div>
+                    <div class="row row-cols-2 justify-content-center">
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Protéines : {{ product.proteins_100g }}</div>
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Energie : {{ product.energy_100g }}</div>
+                    </div>
+                    <div class="row row-cols-2 justify-content-center">
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Matières grasses : {{ product.fat_100g }}</div>
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Fibres : {{ product.fiber_100g }}</div>
+                    </div>
+                    <div class="row row-cols-2 justify-content-center">
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Glucides : {{ product.carbohydrates_100g }}</div>
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Sel : {{ product.salt_100g }}</div>
+                    </div>
+                    <div class="row row-cols-2 justify-content-center">
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Gras saturés : {{ product.saturated_fat_100g }}</div>
+                        <div class="col col-md-4 col-lg-6 text-center text-white">Sucre : {{ product.sugars_100g }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col text-center">
+                    <a href="{{ product.url }}" class="btn btn-primary">Voir la fiche d'OpenFoodFacts</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container px-4 px-lg-5">
+            <div class="container">
+                <h2 class="text-primary text-center mb-5">Vous pouvez remplacer cet aliment par :</h2>
+                <div class="row mt-2">
+                    {% for substitute in substitutes %}
+                    <div class="col-lg-4 mb-5">
+                        <div class="card prod_card m-auto">
+                            <div class="position-relative">
+                                <img class="img_nutriscore" src="static/assets/img/nutriscore/nutriscore-{{substitute.nutriscore}}.png" alt="nutriscore">
+                            </div>
+                            <img src="{{ substitute.image }}" class="card-img-top img_product" alt="image du produit">
+                            <div class="text-center mt-auto" style="height: 2.5rem;">{{ substitute.product_name }}</div>
+                            {% if user.is_authenticated %}
+                            <div class="btn">
+                                <img src="static/assets/img/diskette.png" alt="diskette" style="height: 2.5rem;">
+                                <a href="/product_save?substitute={{ substitute.bar_code }}" class="btn btn-primary align-items-center">Sauvegarder</a>
+                            </div>
+                            {% else %}
+                            <div class="btn">
+                                <a href="{% url 'login' %}?next=/substitute?query={{ product.bar_code }}" class="btn btn-primary align-items-center">Se connecter</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock header %}
+
+{% block content %}
+{% endblock content %}

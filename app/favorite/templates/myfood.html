@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <!-- Masthead-->
+    <header class="masthead">
+        <section>
+            <div class="container">
+                <h1 class="text-primary text-center mb-5">Mes Aliments</h1>
+            </div>
+            <div class="container">
+                <div class="row mb-2">
+                    {% for favorite in favorites %}
+                    <div class="col-lg-4 mb-5">
+                        <div class="card prod_card m-auto" style="height: 20rem;">
+                            <div class="position-relative">
+                                <img class="img_nutriscore" src="static/assets/img/nutriscore/nutriscore-{{favorite.nutriscore}}.png" alt="nutriscore">
+                            </div>
+                            <img src="{{ favorite.image }}" class="card-img-top img_product" alt="image du produit">
+                            <div class="text-center mt-auto" style="min-height: 2rem;">{{ favorite.product_name }}</div>
+                            <div class="btn">                            
+                                <a href="/description?query={{ favorite.bar_code }}" class="btn btn-primary align-items-center">Description du produit</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if favorites.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ favorites.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ favorites.number }} of {{ favorites.paginator.num_pages }}.
+                    </span>
+            
+                    {% if favorites.has_next %}
+                        <a href="?page={{ favorites.next_page_number }}">next</a>
+                        <a href="?page={{ favorites.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </section>
+    </header>
+{% endblock header %}
+
+{% block content %}
+{% endblock content %}

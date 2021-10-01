@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container px-4 px-lg-5 h-100">
+            <div class="row gx-4 gx-lg-5 align-items-center justify-content-center text-center">
+                <div class="col-lg-8 align-self-start">
+                    <h2 class="text-primary">Créer un compte</h2>
+                </div>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <div class="form-group col col-md-6">
+                        <h5 class="text-primary">{{ form.username.label_tag }}</h5>
+                        <input class="form-control" type="text" name="username">
+                        <small class="text-white">{{ form.username.help_text }}</small>
+                        <strong class="text-red">{{ form.username.errors }}</strong>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="form-group col col-md-6">
+                        <h5 class="text-primary">{{ form.first_name.label_tag }}</h5>
+                        <input class="form-control" type="text" name="first_name">
+                        <strong class="text-red">{{ form.first_name.errors }}</strong>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="form-group col col-md-6">
+                        <h5 class="text-primary">{{ form.last_name.label_tag }}</h5>
+                        <input class="form-control" type="text" name="last_name">
+                        <strong class="text-red">{{ form.last_name.errors }}</strong>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="form-group col col-md-6">
+                        <h5 class="text-primary">{{ form.email.label_tag }}</h5>
+                        <input class="form-control" type="text" name="email">
+                        <strong class="text-red">{{ form.email.errors }}</strong>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="form-group col col-md-6">
+                        <h5 class="text-primary">{{ form.password1.label_tag }}</h5>
+                        <input class="form-control" type="password" name="password1">
+                        <small class="text-white">{{ form.password1.help_text }}</small>
+                        <strong class="text-red">{{ form.password1.errors }}</strong>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="form-group col col-md-6">
+                        <h5 class="text-primary">{{ form.password2.label_tag }}</h5>
+                        <input class="form-control" type="password" name="password2">
+                        <small class="text-white">{{ form.password2.help_text }}</small>
+                        <strong class="text-red">{{ form.password2.errors }}</strong>
+                    </div>
+                </div>
+
+                <div class="row gx-4 gx-lg-5 align-items-center justify-content-center text-center">
+                    <div class="col-lg-8 align-self-start">
+                        <button class="btn btn-primary" type="submit" name="submit_form">Valider</button>
+                    </div>
+                </div>   
+            </form>
+        </div>
+    </header>
+{% endblock header %}
