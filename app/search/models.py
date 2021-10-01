@@ -49,7 +49,7 @@ class Product(models.Model):
         better_category = category_by_number_products.filter(product=product)
 
         sub_products = Product.objects.filter(
-            nutriscore__lte=product.nutriscore,
+            nutriscore__gte=product.nutriscore,
             categories=better_category[0]
         ).order_by('nutriscore')[:3]
         return sub_products
