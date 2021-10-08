@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <!-- Masthead-->
+    <header class="masthead">
+        <section>
+            <form method = "post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Upload</button>
+            </form>
+        </section>
+    </header>
+{% endblock header %}
+
+{% block content %}
+{% endblock content %}

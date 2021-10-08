@@ -1,3 +1,5 @@
+from .models import ImageProfile
+from django import forms
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import get_user_model
 
@@ -10,3 +12,10 @@ class SignUpForm(auth_forms.UserCreationForm):
     class Meta(auth_forms.UserCreationForm.Meta):
         model = get_user_model()
         fields = ('email',)
+
+
+class ImageProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = ImageProfile
+        fields = ['img_profile']
