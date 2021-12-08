@@ -1,11 +1,11 @@
-from usermanager.views import Profile
 from usermanager.models import User
+from usermanager.views import Profile
 
 from django.contrib.auth.models import AnonymousUser
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import reverse
-from django.test import TestCase
 
 
 # Create your tests here.
@@ -25,11 +25,11 @@ class TestView(TestCase):
         # ImageProfile.objects.create(user=self.user, img_profile=self.fake_image)
         return super().setUp()
 
-    def test_signup(self):
+    def test_signup_class_view(self):
         response_get = self.client.get(reverse("signup"))
         self.assertContains(response_get, "Créer un compte", status_code=200)
 
-        # test form post with good information and display login.html
+    def test_signup_post_with_good_information(self):
         response_post = self.client.post(reverse("signup"), {
                 "email": self.username2,
                 "password1": self.password,
@@ -42,14 +42,27 @@ class TestView(TestCase):
             "Pas encore inscrit?",
             status_code=200
         )
-
         # test if the user was created
         user = User.objects.all()
         self.assertEqual(len(user), 2)
 
-        # test that we cannot register the same email
+    def test_signup_post_with_bad_information(self):
         response_post = self.client.post(reverse("signup"), {
-                "email": self.username2,
+                "email": "bademail",
+                "password1": self.password,
+                "password2": self.password
+            },
+            follow=True
+        )
+        self.assertContains(
+            response_post,
+            "Saisissez une adresse de courriel valide.",
+            status_code=200
+        )
+
+    def test_signup_post_with_an_existing_email(self):
+        response_post = self.client.post(reverse("signup"), {
+                "email": self.username,
                 "password1": self.password,
                 "password2": self.password
             },
@@ -61,7 +74,7 @@ class TestView(TestCase):
             status_code=200
         )
 
-    def test_login(self):
+    def test_login_class_view(self):
         response_get = self.client.get(reverse("login"))
         self.assertContains(
             response_get,
@@ -69,19 +82,14 @@ class TestView(TestCase):
             status_code=200
         )
 
-        # test user login with good credentials
+    def test_login_with_good_information(self):
         response_post = self.client.post(reverse("login"), {
-                "username": self.username2,
-                "password": self.password
-            }
-        )
-        self.assertContains(
-            response_post,
-            "Pas encore inscrit?",
-            status_code=200
-        )
+            "username": self.username,
+            "password": self.password
+        })
+        self.assertEqual(response_post.status_code, 200)
 
-        # test user login with bad credentials
+    def test_login_with_bad_information(self):
         response_post = self.client.post(reverse("login"), {
                 "username": self.username2,
                 "password": "badpassword"
@@ -92,6 +100,11 @@ class TestView(TestCase):
             "Votre nom d'utilisateur ou votre mot de passe est incorrect. Veuillez réessayer",
             status_code=200
         )
+
+    def test_profile_view_redirect_if_not_logged_in(self):
+        response_get = self.client.get(reverse("profile"))
+        self.assertEqual(response_get.status_code, 302)
+        self.assertRedirects(response_get, "/accounts/login/?next=/accounts/profile/")
 
     def test_logout(self):
         self.client.login(email=self.username, password=self.password)
@@ -114,11 +127,16 @@ class TestView(TestCase):
         response = Profile.as_view()(request)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'usernametest')
-        # the user has the default avatar
-        self.assertContains(response, 0)
 
-    def test_profile_post(self):
-        pass
+    def test_profile_get_context(self):
+        request = self.factory.get('profile')
+        request.user = self.user
+        view = Profile()
+        view.setup(request)
+        context = view.get_context_data()
+        self.assertEqual(context['username'], 'Usernametest')
+        self.assertEqual(context['email'], self.user)
+        self.assertEqual(context['avatar'], 0)
 
     def test_extract_username_from_mail(self):
         request = self.factory.get('profile')
