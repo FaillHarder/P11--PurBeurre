@@ -17,10 +17,10 @@
         <div class="row gx-4 gx-lg-5 align-items-center justify-content-center">
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
-                <label for="fromlogin" class="text-primary"><h4>Identifiant</h4></label>
+                <label for="formlogin" class="text-primary"><h4>Identifiant</h4></label>
                 <input type="text" autocomplete="off" name="username" class="form-control" placeholder="exemple@exemple.fr">
                 
-                <label for="fromlogin" class="text-primary mt-2"><h4>Password</h4></label>
+                <label for="formlogin" class="text-primary mt-2"><h4>Password</h4></label>
                 <input type="password" name="password" class="form-control" placeholder="Mot de passe">
                 
                 {% if request.GET.next %}

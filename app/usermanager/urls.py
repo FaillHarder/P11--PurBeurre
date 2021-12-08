@@ -1,4 +1,3 @@
-from usermanager import views
 from usermanager.views import Signup, Login, Logout, Profile
 from django.urls import path
 from django.conf import settings
@@ -10,7 +9,6 @@ urlpatterns = [
     path('accounts/login/', Login.as_view(), name="login"),
     path('accounts/profile/', Profile.as_view(), name="profile"),
     path('accounts/logout/', Logout.as_view(), name="logout"),
-    path('accounts/profile/customize', views.customize, name="customize"),
 ]
 
 if settings.DEBUG:

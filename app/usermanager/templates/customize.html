@@ -3,13 +3,15 @@
 {% block header %}
     <!-- Masthead-->
     <header class="masthead">
-        <section>
-            <form method = "post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Upload</button>
-            </form>
-        </section>
+        <div class="container">
+            <section>
+                <form method = "post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="formImg" class="form-label">{{ form.img_profile }}</label>
+                    <button class="btn btn-primary mt-2" type="submit">Valider</button>
+                </form>
+            </section>
+        </div>
     </header>
 {% endblock header %}
 

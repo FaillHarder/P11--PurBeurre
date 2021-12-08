@@ -1,14 +1,16 @@
 from usermanager.forms import SignUpForm, ImageProfileForm
 from usermanager.models import User, ImageProfile
 
-import os
-from pathlib import Path
-from django.views.generic import CreateView, TemplateView
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView
+
+import os
+from pathlib import Path
+from PIL import Image
 
 
 class Signup(CreateView):
@@ -25,15 +27,17 @@ class Logout(LogoutView):
     next_page = reverse_lazy('index')
 
 
-class Profile(LoginRequiredMixin, TemplateView):
+class Profile(LoginRequiredMixin, FormView):
+    form_class = ImageProfileForm
     template_name = 'profile.html'
     permission_required = 'usermanager.Login'
 
     def get_context_data(self):
         context = super().get_context_data()
         context['username'] = Profile.extract_username_from_mail(
-            str(self.request.user)
+            str(self.request.user).title()
         )
+        context['email'] = self.request.user
         user = self.request.user.pk
         try:
             avatar_profile = ImageProfile.objects.get(user_id=user)
@@ -46,27 +50,26 @@ class Profile(LoginRequiredMixin, TemplateView):
     def extract_username_from_mail(mail):
         return mail[:mail.find('@')]
 
-
-def customize(request):
-
-    if request.method == 'POST':
-        form = ImageProfileForm(request.POST, request.FILES)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             img = form.cleaned_data.get('img_profile')
             user = request.user
-            try:
-                img_exist = ImageProfile.objects.get(user_id=user.pk)
-                img_path = Path("media/{}".format(img_exist.img_profile))
-                if img_path.is_file():
-                    os.remove("media/{}".format(img_exist.img_profile))
-                img_exist.img_profile = img
-                img_exist.save()
-            except ObjectDoesNotExist:
-                ImageProfile.objects.create(
-                    img_profile=img,
-                    user=user
-                )
+            Profile.try_if_user_img_exist_and_delete_or_create(img, user)
             return redirect('profile')
-    else:
-        form = ImageProfileForm()
-    return render(request, 'customize.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
+
+    @staticmethod
+    def try_if_user_img_exist_and_delete_or_create(img, user):
+        try:
+            img_exist = ImageProfile.objects.get(user_id=user.pk)
+            img_path = Path("media/{}".format(img_exist.img_profile))
+            if img_path.is_file():
+                os.remove("media/{}".format(img_exist.img_profile))
+            img_exist.img_profile = img
+            img_exist.save()
+        except ObjectDoesNotExist:
+            ImageProfile.objects.create(
+                img_profile=img,
+                user=user
+            )

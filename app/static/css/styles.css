@@ -11064,3 +11064,37 @@ header.product h1, header.product .h1 {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  width: 500px;
+  position: relative;
+}
+
+.popup .popup-btn {
+  position: absolute;
+  font-size: 1.5rem;
+  top: 10px;
+  right: 10px;
+  border: none;
+}
+
+.popup .popup-btn:hover {
+  color: var(--bs-primary);
+}
