@@ -10,7 +10,6 @@ from django.views.generic import CreateView, FormView
 
 import os
 from pathlib import Path
-from PIL import Image
 
 
 class Signup(CreateView):

@@ -1,12 +1,11 @@
 from usermanager.views import Profile
-from usermanager.models import User, ImageProfile
+from usermanager.models import User
 
 from django.contrib.auth.models import AnonymousUser
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test.client import RequestFactory
 from django.urls import reverse
 from django.test import TestCase
-# from PIL import Image
 
 
 # Create your tests here.
@@ -119,15 +118,13 @@ class TestView(TestCase):
         self.assertContains(response, 0)
 
     def test_profile_post(self):
-
         pass
-        
 
     def test_extract_username_from_mail(self):
         request = self.factory.get('profile')
         request.user = self.username
         result = Profile.extract_username_from_mail(request.user)
         self.assertEqual(result, 'usernametest')
-    
+
     def test_try_if_user_img_exist_delete_or_create(self):
         pass
