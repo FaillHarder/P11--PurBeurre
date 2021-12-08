@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container">
+            <section>
+                <form method = "post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="formImg" class="form-label">{{ form.img_profile }}</label>
+                    <button class="btn btn-primary mt-2" type="submit">Valider</button>
+                </form>
+            </section>
+        </div>
+    </header>
+{% endblock header %}
+
+{% block content %}
+{% endblock content %}
