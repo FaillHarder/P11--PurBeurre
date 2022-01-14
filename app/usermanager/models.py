@@ -10,7 +10,7 @@ class User(AbstractUser):
     username = models.CharField(null=True, max_length=30)
     # Login with email
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('',)
+    REQUIRED_FIELDS = ('username',)
 
     def get_absolute_url(self):
         return reverse('login')

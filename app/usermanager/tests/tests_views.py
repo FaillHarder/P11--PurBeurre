@@ -2,7 +2,6 @@ from usermanager.models import User
 from usermanager.views import Profile
 
 from django.contrib.auth.models import AnonymousUser
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import reverse
@@ -21,8 +20,6 @@ class TestView(TestCase):
             password=self.password
         )
         self.user = User.objects.get(email=self.username)
-        self.fake_image = SimpleUploadedFile("avatartest.png", b"file_content", content_type='image/png')
-        # ImageProfile.objects.create(user=self.user, img_profile=self.fake_image)
         return super().setUp()
 
     def test_signup_class_view(self):
@@ -101,11 +98,6 @@ class TestView(TestCase):
             status_code=200
         )
 
-    def test_profile_view_redirect_if_not_logged_in(self):
-        response_get = self.client.get(reverse("profile"))
-        self.assertEqual(response_get.status_code, 302)
-        self.assertRedirects(response_get, "/accounts/login/?next=/accounts/profile/")
-
     def test_logout(self):
         self.client.login(email=self.username, password=self.password)
         response_logout = self.client.get(reverse("logout"), follow=True)
@@ -114,6 +106,11 @@ class TestView(TestCase):
             "Du gras, oui, mais de qualité!",
             status_code=200
         )
+
+    def test_profile_view_redirect_if_not_logged_in(self):
+        response_get = self.client.get(reverse("profile"))
+        self.assertEqual(response_get.status_code, 302)
+        self.assertRedirects(response_get, "/accounts/login/?next=/accounts/profile/")
 
     def test_profile(self):
         # user not logged in
@@ -143,6 +140,3 @@ class TestView(TestCase):
         request.user = self.username
         result = Profile.extract_username_from_mail(request.user)
         self.assertEqual(result, 'usernametest')
-
-    def test_try_if_user_img_exist_delete_or_create(self):
-        pass

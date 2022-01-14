@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, TemplateView
 
 import os
 from pathlib import Path
@@ -26,13 +26,13 @@ class Logout(LogoutView):
     next_page = reverse_lazy('index')
 
 
-class Profile(LoginRequiredMixin, FormView):
+class Profile(LoginRequiredMixin, TemplateView):
     form_class = ImageProfileForm
     template_name = 'profile.html'
-    permission_required = 'usermanager.Login'
 
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.form_class
         context['username'] = Profile.extract_username_from_mail(
             str(self.request.user).title()
         )
@@ -44,6 +44,10 @@ class Profile(LoginRequiredMixin, FormView):
         except ObjectDoesNotExist:
             context['avatar'] = 0
         return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
 
     @staticmethod
     def extract_username_from_mail(mail):
