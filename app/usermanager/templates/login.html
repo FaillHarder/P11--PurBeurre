@@ -1,11 +1,6 @@
-{% extends 'base.html' %}
-
-
-
-
-{% block header %}
-    <!-- Masthead-->
-<header class="masthead">
+{% extends 'base.html' %} {% block content %}
+<!-- Masthead-->
+<div class="masthead-class">
     <div class="container px-4 px-lg-5 h-100">
         <div class="row gx-4 gx-lg-5 align-items-center justify-content-center text-center">
             <div class="col-lg-8 align-self-center">
@@ -19,18 +14,15 @@
                 {% csrf_token %}
                 <label for="formlogin" class="text-primary"><h4>Identifiant</h4></label>
                 <input type="text" autocomplete="off" name="username" class="form-control" placeholder="exemple@exemple.fr">
-                
-                <label for="formlogin" class="text-primary mt-2"><h4>Password</h4></label>
-                <input type="password" name="password" class="form-control" placeholder="Mot de passe">
-                
-                {% if request.GET.next %}
-                    <input type="hidden" name="next" value="{{ request.GET.next }}">
-                {% endif %}
 
-                <button type="submit" value="{{ request.GET.index }}" class="btn btn-primary mt-2" name="validate">Valider</button>         
+                <label for="formlogin" class="text-primary mt-2"><h4>Password</h4></label>
+                <input type="password" name="password" class="form-control" placeholder="Mot de passe"> {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}"> {% endif %}
+
+                <button type="submit" value="{{ request.GET.index }}" class="btn btn-primary mt-2" name="validate">Valider</button>
             </form>
             <h4><a href="{% url 'signup' %}">Pas encore inscrit?</a></h4>
         </div>
-    </div>    
-</header>
-{% endblock header %}
+    </div>
+</div>
+{% endblock content %} {% block about %} {% endblock about %} {% block contact %} {% endblock contact %}
