@@ -1,58 +1,50 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block header %}
-    <!-- Masthead-->
-    <header class="masthead">
-        <!-- <section>
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!-- Masthead-->
+<div class="masthead-class">
+    <!-- <section>
                 <div class="container">
                     <h1 class="text-primary text-center mb-5">Bonjour {{ username }}</h1>                   
                 </div>
         </section> -->
-        
-        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-            <div class="card p-4" style="min-width: 20rem;">
-                <div class="mt-3 image d-flex flex-column justify-content-center align-items-center">
-                    {% if avatar == 0 %}
-                    <img src="{% static 'assets/img/avatar.png' %}" height="100" width="100"/>
-                    {% else %}
-                    <img src="{{ avatar.img_profile.url }}" height="100" width="100" />
-                    {% endif %}
-                    <div class="container">
-                        <h2 class="text-primary text-center mt-5">Bonjour {{ username }}</h2>
-                    </div>
-                    <span class="text-center mt-5">{{ email }}</span>
-                    
-                    <div class=" d-flex mt-2">
-                        <button class="btn1 btn-dark" id="editAvatar">Edit Avatar</button>
-                    </div>
+
+    <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+        <div class="card p-4" style="min-width: 20rem; min-height: 20rem;">
+            <div class="mt-3 image d-flex flex-column justify-content-center align-items-center">
+                {% if avatar == 0 %}
+                <img src="{% static 'assets/img/avatar.png' %}" height="100" width="100" /> {% else %}
+                <img src="{{ avatar.img_profile.url }}" height="100" width="100" style="border: thick double #2c3538; border-radius: 10%;" /> {% endif %}
+                <div class="container">
+                    <h2 class="text-primary text-center mt-5">Bonjour {{ username }}</h2>
+                </div>
+                <span class="text-center mt-5">{{ email }}</span>
+
+                <div class=" d-flex mt-2">
+                    <button class="btn1 btn-dark" id="editAvatar">Edit Avatar</button>
                 </div>
             </div>
         </div>
-        <div class="popup-container d-flex" style="visibility: hidden;">
-            <div class="popup">
-                <button class="popup-btn">X</button>
-                <form method = "post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label class="mt-2" for="formImg" class="form-label">{{ form.img_profile }}</label>
-                    <button class="btn btn-primary" type="submit">Valider</button>
-                </form>
-            </div>
+    </div>
+    <div class="popup-container" style="display: none;">
+        <div class="popup">
+            <button class="popup-btn">X</button>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="mt-2" for="formImg" class="form-label">{{ form.img_profile }}</label>
+                <button class="btn btn-primary" type="submit">Valider</button>
+            </form>
         </div>
-        <script>
-            const editAvatar = document.getElementById('editAvatar');
-            const formAvatar = document.querySelector('.popup-container');
-            const btnClose = document.querySelector('.popup-btn');
+    </div>
+    <script>
+        const editAvatar = document.getElementById('editAvatar');
+        const formAvatar = document.querySelector('.popup-container');
+        const btnClose = document.querySelector('.popup-btn');
 
-            editAvatar.addEventListener('click', () => {
-                formAvatar.style.visibility = 'visible';
-            });
-            btnClose.addEventListener('click', () => {
-                formAvatar.style.visibility = 'hidden';
-            });
-            
-        </script>
-    </header>
-{% endblock header %}
-
-{% block content %}
-{% endblock content %}
+        editAvatar.addEventListener('click', () => {
+            formAvatar.style.display = 'flex';
+        });
+        btnClose.addEventListener('click', () => {
+            formAvatar.style.display = 'none';
+        });
+    </script>
+</div>
+{% endblock content %} {% block about %} {% endblock about %} {% block contact %} {% endblock contact %}
