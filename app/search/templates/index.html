@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <!-- Masthead-->
 <div class="masthead-class">
     <div class="container px-4 px-lg-5 h-100">
@@ -15,8 +15,47 @@
                     <button class="btn btn-primary" type="submit" id="submitQuery">Chercher</button>
                 </form>
             </div>
+            <!-- Modal Ajax product search -->
+
+            <!-- Button trigger modal -->
+            <!-- <button type="button" class="btn btn-primary" style="display: block;" data-bs-toggle="modal" data-bs-target="#Modal">
+    Launch demo modal
+            </button> -->
+
+            <!-- Modal -->
+            <!-- <div class="modal fade show" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-modal="true" role="dialog" style="display: block;"> -->
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title" id="ModalLabel">Résultat de votre recherche</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="test"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 justify-content-center" id="ajax">
+
+                            <div class="col d-flex justify-content-center m-1">
+                                <div class="card prod_card">
+                                    <div class="position-relative">
+                                        <img class="img_nutriscore" src="static/assets/img/nutriscore/nutriscore-d.png" alt="nutriscore">
+                                    </div>
+                                    <img class="ajax_img" src="https://fr.openfoodfacts.org/images/products/301/762/042/5035/front_fr.330.400.jpg" alt="image du produit">
+                                    <p class="card-text">Pizza</p>
+                                    <a href="/substitute?query=" class="btn btn-primary">Selectionner</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <!-- end Modal Ajax product search -->
     </div>
 </div>
+</div>
 
+
+<!-- script ajax.js -->
+<script src="{% static 'js/ajax_search_product.js' %}"></script>
 {% endblock content %}
