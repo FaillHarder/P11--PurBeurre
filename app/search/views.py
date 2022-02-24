@@ -1,4 +1,6 @@
 from search.models import Product
+
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 
@@ -12,7 +14,7 @@ def mentions(request):
 
 def search_product(request):
     """Get user input to search product in db.
-       return a queryset"""
+    return a queryset"""
     if request.method == "GET":
         query = request.GET.get("query")
         if query != "":
@@ -27,9 +29,26 @@ def search_product(request):
         return(redirect("index"))
 
 
+def ajax_search_product(request):
+    """Get user input to search product in db.
+    return a queryset"""
+    query = request.POST.get("query")
+    if query != "":
+        ajax_response = []
+        products_list = Product().search(query)
+        for prod in products_list:
+            ajax_response.append({
+                "product_name": prod.product_name,
+                "bar_code": prod.bar_code,
+                "nutriscore": prod.nutriscore,
+                "image": prod.image
+            })
+        return JsonResponse({"result": ajax_response})
+
+
 def substitute(request):
     """Get product seleted by user,use their barcode for
-       search a substitute. Return a queryset"""
+    search a substitute. Return a queryset"""
     if request.method == "GET":
         bar_code = request.GET.get("query")
         product = Product.objects.get(bar_code=bar_code)
