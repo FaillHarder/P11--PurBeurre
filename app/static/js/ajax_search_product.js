@@ -2,7 +2,8 @@ const query = document.getElementById("query");
 const submitQuery = document.getElementById("submitQuery");
 const form = document.getElementById("form");
 const body = document.getElementById("page-top");
-const btn = document.getElementById("test");
+const btnClearAjaxResult = document.getElementById("clearAjaxResult");
+const ajax = document.getElementById("ajax");
 
 // requete ajax
 async function postQuery(url, data, csrftoken) {
@@ -23,38 +24,47 @@ submitQuery.addEventListener("click", async function(e) {
     let formData = new FormData();
     let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     formData.append("query", query.value);
-    form.reset()
+    form.reset();
+    // requete
     let result = await postQuery("ajax_search_product", formData, csrfToken);
-    console.log(result["result"])
+    // clear div display result
+    clearResult();
     for (let product of result["result"]) {
-        console.log(product["product_name"])
+        createProductCard(
+            product["nutriscore"],
+            product["image"],
+            product["product_name"],
+            product["bar_code"],
+        );
     }
 })
 
-// display product
+// class list
+const classDivCol = ["col", "d-flex", "justify-content-center", "m-4"];
+const classDivCard = ["card", "prod_card", "m-auto"];
+const classDivPosition = ["position-relative"];
+const classImgProduct = ["card-img-top", "img_ajax"];
+const classNameProduct = ["text-center", "m-auto"];
+const classImgNutriscore = ["img_nutriscore"];
+const classLinkProduct = ["btn", "btn-primary", "m-auto", "mb-1"];
 
-// function createDivCol() {
-//     let divCol = document.createElement("div");
-//     divCol.classList.add("col", "d-flex", "justify-content-center", "m-1");
-//     return divCol;
-// }
-
-// function createDivCard() {
-//     let divCard = document.createElement("div");
-//     divCard.classList.add("card", "prod_card");
-//     // divCard.style.cssText = "";
-//     return divCard;
-// }
-
-// function createDivPosition() {
-//     let divPosRelativ = document.createElement("div");
-//     divPosRelativ.classList.add("position-relative");
-//     return divPosRelativ;
-// }
-
-
-
-btn.addEventListener("click", createProductCard);
+// create product
+function createProductCard(nutri, imgProduct, nameProduct, substitute) {
+    const divCol = createDiv(classDivCol);
+    const divCard = createDiv(classDivCard);
+    divCol.appendChild(divCard);
+    const divPosition = createDiv(classDivPosition);
+    divCard.appendChild(divPosition);
+    const nutriImg = createImgNutriscore(nutri, classImgNutriscore);
+    divPosition.appendChild(nutriImg);
+    ajax.appendChild(divCol);
+    const productImg = createImgProduct(imgProduct, classImgProduct);
+    divCard.appendChild(productImg);
+    const productName = createProductName(nameProduct, classNameProduct);
+    divCard.appendChild(productName);
+    const productLink = createProductLink(substitute, classLinkProduct);
+    divCard.appendChild(productLink);
+}
 
 function createDiv(classlist) {
     let newDiv = document.createElement("div");
@@ -62,56 +72,9 @@ function createDiv(classlist) {
     return newDiv;
 }
 
-const classDivCol = ["col", "d-flex", "justify-content-center", "m-1"];
-const classDivCard = ["card", "prod_card"];
-const classDivPosition = ["position-relative"];
-
-
-function createProductCard() {
-    const divCol = createDiv(classDivCol);
-    const divCard = createDiv(classDivCard);
-    divCol.appendChild(divCard);
-    const divPosition = createDiv(classDivPosition);
-    divCard.appendChild(divPosition);
-    const nutriImg = createImgNutriscore("E");
-    divPosition.appendChild(nutriImg);
-    ajax.appendChild(divCol);
-    const productImg = createImgProduct("https://fr.openfoodfacts.org/images/products/301/762/042/5035/front_fr.330.400.jpg");
-    divCard.appendChild(productImg);
-    const productName = createProductName("Nutella");
-    divCard.appendChild(productName);
-    const productLink = createProductLink("substitute?query=3242272349556");
-    divCard.appendChild(productLink);
-}
-
-function createProductCard2(nutri, imgProduct, nameProduct, substitute) {
-    const divCol = createDiv(classDivCol);
-    const divCard = createDiv(classDivCard);
-    divCol.appendChild(divCard);
-    const divPosition = createDiv(classDivPosition);
-    divCard.appendChild(divPosition);
-    const nutriImg = createImgNutriscore(nutri);
-    divPosition.appendChild(nutriImg);
-    ajax.appendChild(divCol);
-    const productImg = createImgProduct(imgProduct);
-    divCard.appendChild(productImg);
-    const productName = createProductName(nameProduct);
-    divCard.appendChild(productName);
-    const productLink = createProductLink(substitute);
-    divCard.appendChild(productLink);
-}
-
-createProductCard2(
-    "a",
-    "https://fr.openfoodfacts.org/images/products/80050100/front_fr.75.400.jpg",
-    "Petit Nutella",
-    "substitute?query=3242272349556"
-)
-
-
-function createImgNutriscore(nutriscore) {
+function createImgNutriscore(nutriscore, classlist) {
     let imgNutriscore = document.createElement("img");
-    imgNutriscore.classList.add("img_nutriscore");
+    imgNutriscore.classList.add(...classlist);
     let str1 = "static/assets/img/nutriscore/nutriscore-"
     let str2 = ".png"
     imgNutriscore.src = str1.concat(nutriscore, str2);
@@ -119,25 +82,34 @@ function createImgNutriscore(nutriscore) {
     return imgNutriscore;
 }
 
-function createImgProduct(productImg) {
+function createImgProduct(productImg, classlist) {
     let img = document.createElement("img");
     img.src = productImg;
-    img.classList.add("ajax-img");
+    img.classList.add(...classlist);
     img.alt = "image du produit";
     return img;
 }
 
-function createProductName(productName) {
-    let p = document.createElement("p");
-    p.classList.add("card-text");
+function createProductName(productName, classlist) {
+    let p = document.createElement("div");
+    p.classList.add(...classlist);
     p.textContent = productName;
     return p;
 }
 
-function createProductLink(link) {
+function createProductLink(link, classlist) {
     let a = document.createElement("a");
-    a.classList.add("btn", "btn-primary");
-    a.href = link;
+    let substituteLink = "/substitute?query="
+    a.classList.add(...classlist);
+    a.href = substituteLink.concat(link);
     a.textContent = "Sélectionner";
     return a;
+}
+
+// remove product
+function clearResult() {
+    let productDiv = document.querySelectorAll(".col");
+    productDiv.forEach(function(div) {
+        div.remove();
+    })
 }
