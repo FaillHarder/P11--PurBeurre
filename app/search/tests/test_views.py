@@ -1,4 +1,4 @@
-from search.views import index, search_product, substitute, mentions
+from search.views import index, search_product, substitute, mentions, ajax_search_product
 from search.models import Product, Category
 
 from django.test import RequestFactory, TestCase
@@ -66,6 +66,10 @@ class TestView(TestCase):
         request.GET = {"query": "pain"}
         view = search_product(request)
         self.assertEqual(view.status_code, 200)
+        # requet post redirect index
+        request = self.factory.post("/search_product")
+        view = search_product(request)
+        self.assertEqual(view.status_code, 302)
 
     def test_substitute(self):
         request = self.factory.get("/substitute", {"query": "3017620425035"})
@@ -78,4 +82,9 @@ class TestView(TestCase):
     def test_mentions(self):
         request = self.factory.get("/mentions")
         view = mentions(request)
+        self.assertEqual(view.status_code, 200)
+
+    def test_ajax_search_product(self):
+        request = self.factory.post("ajax_search_product", {"query": "nutella"})
+        view = ajax_search_product(request)
         self.assertEqual(view.status_code, 200)

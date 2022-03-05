@@ -55,6 +55,7 @@ class Profile(LoginRequiredMixin, FormView):
             img = form.cleaned_data.get('img_profile')
             user = request.user
             Profile.try_if_user_img_exist_and_delete_or_create(img, user)
+
             return redirect('profile')
         return render(request, self.template_name, {'form': form})
 
@@ -62,9 +63,8 @@ class Profile(LoginRequiredMixin, FormView):
     def try_if_user_img_exist_and_delete_or_create(img, user):
         try:
             img_exist = ImageProfile.objects.get(user_id=user.pk)
-            img_path = Path("media/{}".format(img_exist.img_profile))
-            if img_path.is_file():
-                os.remove("media/{}".format(img_exist.img_profile))
+            # delete old image
+            os.remove(Path(f"media/{img_exist}"))
             img_exist.img_profile = img
             img_exist.save()
         except ObjectDoesNotExist:
