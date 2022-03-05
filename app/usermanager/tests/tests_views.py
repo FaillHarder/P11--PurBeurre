@@ -1,11 +1,13 @@
-from usermanager.models import User
+from usermanager.forms import ImageProfileForm
+from usermanager.models import User, ImageProfile
 from usermanager.views import Profile
 
 from django.contrib.auth.models import AnonymousUser
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-from django.test.client import RequestFactory
+from django.test.client import RequestFactory, Client
 from django.urls import reverse
+import os
 
 
 # Create your tests here.
@@ -13,6 +15,7 @@ class TestView(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()
+        self.client = Client()
         self.username = "usernametest@test.fr"
         self.password = "passwordtest"
         self.username2 = "usernametest2@test.fr"
@@ -21,8 +24,13 @@ class TestView(TestCase):
             password=self.password
         )
         self.user = User.objects.get(email=self.username)
-        self.fake_image = SimpleUploadedFile("avatartest.png", b"file_content", content_type='image/png')
-        # ImageProfile.objects.create(user=self.user, img_profile=self.fake_image)
+
+        self.image = SimpleUploadedFile(
+            name='test.png',
+            content=open("static/assets/img/avatar.png", 'rb').read(),
+            content_type='image/png'
+        )
+
         return super().setUp()
 
     def test_signup_class_view(self):
@@ -144,5 +152,31 @@ class TestView(TestCase):
         result = Profile.extract_username_from_mail(request.user)
         self.assertEqual(result, 'usernametest')
 
-    def test_try_if_user_img_exist_delete_or_create(self):
-        pass
+    def test_imageprofileform(self):
+        form = ImageProfileForm(data={}, files={"img_profile": self.image})
+        self.assertTrue(form.is_valid())
+
+    def delete_photo_file(self):
+        os.remove("media/avatar/test.png")
+
+    def test_post_imagefield(self):
+        # post with image
+        request = self.factory.post('profile', {'img_profile': self.image})
+        request.user = self.user
+        response = Profile().post(request)
+        self.assertEqual(response.status_code, 302)
+        # post
+        request2 = self.factory.post('profile')
+        response2 = Profile().post(request2)
+        self.assertEqual(response2.status_code, 200)
+
+        # get context_data with a new image profile
+        request = self.factory.get('profile')
+        request.user = self.user
+        view = Profile()
+        view.setup(request)
+        context = view.get_context_data()
+        avatar_profile = ImageProfile.objects.get(user_id=self.user)
+        self.assertEqual(avatar_profile.img_profile, "avatar/test.png")
+        self.assertEqual(context['avatar'], avatar_profile)
+        self.delete_photo_file()
