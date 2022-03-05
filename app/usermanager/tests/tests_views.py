@@ -177,6 +177,6 @@ class TestView(TestCase):
         view.setup(request)
         context = view.get_context_data()
         avatar_profile = ImageProfile.objects.get(user_id=self.user)
-        self.assertEqual(avatar_profile, "test.png")
+        self.assertEqual(avatar_profile.img_profile, "avatar/test.png")
         self.assertEqual(context['avatar'], avatar_profile)
         self.delete_photo_file()
