@@ -1,8 +1,7 @@
-const query = document.getElementById("query");
+// const query = document.getElementById("query");
 const submitQuery = document.getElementById("submitQuery");
 const form = document.getElementById("form");
 const body = document.getElementById("page-top");
-const btnClearAjaxResult = document.getElementById("clearAjaxResult");
 const ajax = document.getElementById("ajax");
 
 // requete ajax
@@ -21,21 +20,28 @@ async function postQuery(url, data, csrftoken) {
 // search
 submitQuery.addEventListener("click", async function(e) {
     e.preventDefault();
+    clearResult();
     let formData = new FormData();
     let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let query = document.getElementById("query");
     formData.append("query", query.value);
     form.reset();
-    // requete
+    // requeste
     let result = await postQuery("ajax_search_product", formData, csrfToken);
-    // clear div display result
-    clearResult();
-    for (let product of result["result"]) {
-        createProductCard(
-            product["nutriscore"],
-            product["image"],
-            product["product_name"],
-            product["bar_code"],
-        );
+    // display result
+    if (result["result"].length == 0) {
+        const divCol = createDiv(classDivCol);
+        divCol.innerHTML += "Aucun résultat";
+        ajax.appendChild(divCol);
+    } else {
+        for (let product of result["result"]) {
+            createProductCard(
+                product["nutriscore"],
+                product["image"],
+                product["product_name"],
+                product["bar_code"],
+            );
+        }
     }
 })
 
@@ -57,13 +63,13 @@ function createProductCard(nutri, imgProduct, nameProduct, substitute) {
     divCard.appendChild(divPosition);
     const nutriImg = createImgNutriscore(nutri, classImgNutriscore);
     divPosition.appendChild(nutriImg);
-    ajax.appendChild(divCol);
     const productImg = createImgProduct(imgProduct, classImgProduct);
     divCard.appendChild(productImg);
     const productName = createProductName(nameProduct, classNameProduct);
     divCard.appendChild(productName);
     const productLink = createProductLink(substitute, classLinkProduct);
     divCard.appendChild(productLink);
+    ajax.appendChild(divCol);
 }
 
 function createDiv(classlist) {
