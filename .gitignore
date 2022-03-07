@@ -137,3 +137,9 @@ dmypy.json
 # docker env prod
 .env.prod
 .env.prod.db
+
+# media
+media/
+
+# chromedriver for selenium
+chrome_driver/

@@ -22,22 +22,11 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title" id="ModalLabel">Résultat de votre recherche</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="clearAjaxResult"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 justify-content-center" id="ajax">
-
-                                <!-- <div class="col d-flex justify-content-center m-1">
-                                <div class="card prod_card">
-                                    <div class="position-relative">
-                                        <img class="img_nutriscore" src="static/assets/img/nutriscore/nutriscore-d.png" alt="nutriscore">
-                                    </div>
-                                    <img class="ajax_img" src="https://fr.openfoodfacts.org/images/products/301/762/042/5035/front_fr.330.400.jpg" alt="image du produit">
-                                    <p class="card-text">Pizza</p>
-                                    <a href="/substitute?query=" class="btn btn-primary">Selectionner</a>
-                                </div>
-                            </div> -->
-
+                                <!-- content ajax request -->
                             </div>
                         </div>
                     </div>
@@ -49,6 +38,4 @@
 </div>
 
 
-<!-- script ajax.js -->
-<script src="{% static 'js/ajax_search_product.js' %}"></script>
 {% endblock content %}
