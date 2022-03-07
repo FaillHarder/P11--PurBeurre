@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.keys import Keys
 import unittest
 import time
 
@@ -183,7 +183,7 @@ class TestPurbeurre(unittest.TestCase):
         element = self.driver.find_element_by_id("editAvatar")
         self.assertEqual(popup.value_of_css_property("display"), "none")
         element.click()
-        
+
         # display popup
         self.assertEqual(popup.value_of_css_property("display"), "flex")
         time.sleep(1)
@@ -210,7 +210,6 @@ class TestPurbeurre(unittest.TestCase):
     #         self.driver.current_url,
     #         f"{self.URL}myfood"
     #     )
-
 
 
 if __name__ == '__main__':
