@@ -33,9 +33,9 @@ def ajax_search_product(request):
     """Get user input to search product in db.
     return a queryset"""
     query = request.POST.get("query")
-    if query != "":
+    ajax_response = []
+    if query:
         print(query)
-        ajax_response = []
         products_list = Product().search(query)
         for prod in products_list:
             ajax_response.append({
@@ -44,6 +44,8 @@ def ajax_search_product(request):
                 "nutriscore": prod.nutriscore,
                 "image": prod.image
             })
+        return JsonResponse({"result": ajax_response})
+    else:
         return JsonResponse({"result": ajax_response})
 
 

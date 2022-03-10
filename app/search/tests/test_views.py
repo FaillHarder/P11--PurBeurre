@@ -88,3 +88,7 @@ class TestView(TestCase):
         request = self.factory.post("ajax_search_product", {"query": "nutella"})
         view = ajax_search_product(request)
         self.assertEqual(view.status_code, 200)
+
+        request = self.factory.post("ajax_search_product", {"query": ""})
+        view = ajax_search_product(request)
+        self.assertEqual(view.status_code, 200)
