@@ -88,7 +88,16 @@ class TestView(TestCase):
         request = self.factory.post("ajax_search_product", {"query": "nutella"})
         view = ajax_search_product(request)
         self.assertEqual(view.status_code, 200)
+        self.assertTrue(view.content, {
+            "result": [{
+                "product_name": "nutella",
+                "bar_code": "3017620425035",
+                "nutriscore": "e",
+                "image": "https://static.openfoodfacts.org/images/products/301/762/042/5035/front_fr.315.400.jpg"
+            }]
+        })
 
         request = self.factory.post("ajax_search_product", {"query": ""})
         view = ajax_search_product(request)
         self.assertEqual(view.status_code, 200)
+        self.assertTrue(view.content, {"result": []})
