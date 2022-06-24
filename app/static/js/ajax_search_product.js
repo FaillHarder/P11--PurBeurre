@@ -1,4 +1,3 @@
-// const query = document.getElementById("query");
 const submitQuery = document.getElementById("submitQuery");
 const form = document.getElementById("form");
 const body = document.getElementById("page-top");

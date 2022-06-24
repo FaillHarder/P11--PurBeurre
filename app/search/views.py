@@ -35,7 +35,6 @@ def ajax_search_product(request):
     query = request.POST.get("query")
     ajax_response = []
     if query:
-        print(query)
         products_list = Product().search(query)
         for prod in products_list:
             ajax_response.append({
