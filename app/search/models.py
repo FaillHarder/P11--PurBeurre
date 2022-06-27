@@ -40,7 +40,7 @@ class Product(models.Model):
 
     def substitute(self, query):
         """Method taking as parameter the bar code of the selected product.
-        Returns a list of 6 substitutes sorted by nutriscore"""
+        Returns a list of 3 substitutes sorted by nutriscore"""
         product = Product.objects.get(bar_code=query)
         # sort the categories by the increasing number of products
         category_by_number_products = Category.objects.annotate(

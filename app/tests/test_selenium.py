@@ -120,7 +120,7 @@ class TestPurbeurre(unittest.TestCase):
         )
 
     def test_search_nutella(self):
-        element = self.driver.find_element_by_id("query")
+        element = self.driver.find_element_by_id("query_top")
         element.clear()
         element.send_keys("nutella")
         element.send_keys(Keys.RETURN)
@@ -130,7 +130,7 @@ class TestPurbeurre(unittest.TestCase):
         )
 
     def test_search_pizza_key_enter(self):
-        element = self.driver.find_element_by_id("query")
+        element = self.driver.find_element_by_id("query_top")
         element.clear()
         element.send_keys("pizza" + Keys.ENTER)
         self.assertEqual(
@@ -139,23 +139,23 @@ class TestPurbeurre(unittest.TestCase):
         )
 
     def test_select_product_and_save(self):
-        self.driver.get(f"{self.URL}substitute?query=80762003")
+        self.driver.get(f"{self.URL}substitute?query=3270160890163")
         self.click_on_link_text("Se connecter")
         self.assertEqual(
             self.driver.current_url,
-            f"{self.URL}accounts/login/?next=/substitute?query=80762003"
+            f"{self.URL}accounts/login/?next=/substitute?query=3270160890163"
         )
         self.write_user_text("username", self.email)
         self.write_user_text("password", self.password1)
         self.click_on_button("validate")
         self.assertEqual(
             self.driver.current_url,
-            f"{self.URL}substitute?query=80762003"
+            f"{self.URL}substitute?query=3270160890163"
         )
         self.click_on_link_text("Sauvegarder")
         self.assertEqual(
             self.driver.current_url,
-            f"{self.URL}product_save?substitute=3111902100082"
+            f"{self.URL}product_save?substitute=3261055946959"
         )
 
     def test_Profile(self):
