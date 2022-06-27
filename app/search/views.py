@@ -31,7 +31,7 @@ def search_product(request):
 
 def ajax_search_product(request):
     """Get user input to search product in db.
-    return a queryset"""
+    return a JsonResponse"""
     query = request.POST.get("query")
     ajax_response = []
     if query:

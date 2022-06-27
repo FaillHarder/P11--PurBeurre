@@ -13,27 +13,13 @@
                         <div class="position-relative">
                             <img class="img_nutriscore" src="static/assets/img/nutriscore/nutriscore-{{product.nutriscore}}.png" alt="nutriscore">
                         </div>
-                        <img src="{{ product.image }}" class="card-img-top img_ajax" alt="image du produit">
+                        <img src="{{ product.image }}" class="card-img-top img_product" alt="image du produit">
 
                         <div class="text-center m-auto">{{ product.product_name }}</div>
                         <a href="/substitute?query={{ product.bar_code }}" class="btn btn-primary m-auto mb-1">Sélectionner</a>
 
                     </div>
                 </div>
-
-
-                <!-- <div class="col-lg-4 mb-5">
-                    <div class="card prod_card m-auto">
-                        <div class="position-relative">
-                            <img class="img_nutriscore" src="static/assets/img/nutriscore/nutriscore-{{product.nutriscore}}.png" alt="nutriscore">
-                        </div>
-                        <img src="{{ product.image }}" class="card-img-top img_product" alt="image du produit">
-                        <div class="text-center mt-auto" style="min-height: 2rem;">{{ product.product_name }}</div>
-                        <div class="btn">
-                            <a href="/substitute?query={{ product.bar_code }}" class="btn btn-primary">Selectionner</a>
-                        </div>
-                    </div>
-                </div> -->
                 {% endfor %}
             </div>
         </div>
